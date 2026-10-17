@@ -23,13 +23,19 @@ export default function SafelinkPage() {
       }
     }
 
-    // 2. Suntikkan script iklan Popunder Adsterra secara otomatis
-    const script = document.createElement('script');
-    script.src = 'https://pl31879658.profitableratecpmnetwork.com/4f/bf/91/4fbf91988c1f25c795f3884bb487ee94.js';
-    script.async = true;
-    document.body.appendChild(script);
+    // 2. Suntikkan script Iklan Popunder Adsterra
+    const popunderScript = document.createElement('script');
+    popunderScript.src = 'https://pl31879658.profitableratecpmnetwork.com/4f/bf/91/4fbf91988c1f25c795f3884bb487ee94.js';
+    popunderScript.async = true;
+    document.body.appendChild(popunderScript);
 
-    // 3. Timer mundur 10 detik
+    // 3. Suntikkan script Iklan Social Bar Adsterra
+    const socialBarScript = document.createElement('script');
+    socialBarScript.src = 'https://pl31879659.profitableratecpmnetwork.com/61/36/9f/61369f51f53aa1b77e21533250f4ac18.js';
+    socialBarScript.async = true;
+    document.body.appendChild(socialBarScript);
+
+    // 4. Timer mundur 10 detik
     if (countdown > 0) {
       const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
       return () => clearTimeout(timer);
