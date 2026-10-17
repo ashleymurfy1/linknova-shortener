@@ -12,6 +12,7 @@ export default function SafelinkPage() {
   const [targetUrl, setTargetUrl] = useState('https://google.com');
 
   useEffect(() => {
+    // 1. Ambil data link dari localStorage berdasarkan slug
     if (slug) {
       const savedLinks = localStorage.getItem('linknova_links');
       if (savedLinks) {
@@ -22,6 +23,13 @@ export default function SafelinkPage() {
       }
     }
 
+    // 2. Suntikkan script iklan Popunder Adsterra secara otomatis
+    const script = document.createElement('script');
+    script.src = 'https://pl31879658.profitableratecpmnetwork.com/4f/bf/91/4fbf91988c1f25c795f3884bb487ee94.js';
+    script.async = true;
+    document.body.appendChild(script);
+
+    // 3. Timer mundur 10 detik
     if (countdown > 0) {
       const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
       return () => clearTimeout(timer);
