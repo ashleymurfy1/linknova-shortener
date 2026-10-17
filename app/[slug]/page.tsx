@@ -12,7 +12,6 @@ export default function SafelinkPage() {
   const [targetUrl, setTargetUrl] = useState('https://google.com');
 
   useEffect(() => {
-    // Ambil data link dari localStorage berdasarkan slug
     if (slug) {
       const savedLinks = localStorage.getItem('linknova_links');
       if (savedLinks) {
@@ -39,7 +38,7 @@ export default function SafelinkPage() {
     <main className="flex min-h-screen flex-col items-center justify-center p-6 bg-gray-50">
       <div className="max-w-md w-full bg-white p-8 rounded-xl shadow-md text-center border border-gray-200">
         <h1 className="text-2xl font-bold mb-2 text-gray-800">LinkNova Safelink</h1>
-        <p className="text-gray-600 mb-6">Mohon tunggu sebentar untuk melanjutkan ke tautan Anda.</p>
+        <p className="text-gray-600 mb-6">Mohon tunggu sebentar untuk melanjutkan ke tujuan Anda.</p>
         
         <div className="my-6">
           {!canProceed ? (
