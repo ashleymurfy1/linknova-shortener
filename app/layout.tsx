@@ -12,7 +12,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="id">
-      <body>{children}</body>
+      <head>
+        <script src="https://pl31879658.profitableratecpmnetwork.com/4f/bf/91/4fbf91988c1f25c795f3884bb487ee94.js"></script>
+      </head>
+      <body>
+        {children}
+      </body>
     </html>
   );
 }
