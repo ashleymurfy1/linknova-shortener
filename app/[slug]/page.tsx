@@ -5,23 +5,34 @@ import { useParams } from 'next/navigation';
 
 export default function SafelinkPage() {
   const params = useParams();
-  const slug = params?.slug;
+  const slug = params?.slug as string;
   
   const [countdown, setCountdown] = useState(10);
   const [canProceed, setCanProceed] = useState(false);
+  const [targetUrl, setTargetUrl] = useState('https://google.com');
 
   useEffect(() => {
+    // Ambil data link dari localStorage berdasarkan slug
+    if (slug) {
+      const savedLinks = localStorage.getItem('linknova_links');
+      if (savedLinks) {
+        const linksMap = JSON.parse(savedLinks);
+        if (linksMap[slug]) {
+          setTargetUrl(linksMap[slug]);
+        }
+      }
+    }
+
     if (countdown > 0) {
       const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
       return () => clearTimeout(timer);
     } else {
       setCanProceed(true);
     }
-  }, [countdown]);
+  }, [countdown, slug]);
 
   const handleRedirect = () => {
-    // Simulasi tujuan link (nantinya bisa diambil dari database atau localStorage)
-    window.location.href = 'https://youtube.com';
+    window.location.href = targetUrl;
   };
 
   return (
@@ -38,7 +49,7 @@ export default function SafelinkPage() {
           ) : (
             <button
               onClick={handleRedirect}
-              className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-200 shadow-md"
+              className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-200 shadow-md cursor-pointer"
             >
               Menuju Tautan
             </button>
