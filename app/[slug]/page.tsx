@@ -3,6 +3,9 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 
+const SUPABASE_URL = 'https://lmyhqzouolhwqlpgqkic.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxteWhxem91b2xod3FscGdxa2ljIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI2NjkzMTEsImV4cCI6MjEwODI0NTMxMX0.4Xe-NTtPQ8FC-fw2bkLwrc0SEvYImJNUTAuMEoH9DxY';
+
 export default function SafelinkPage() {
   const params = useParams();
   const slug = params?.slug as string;
@@ -12,30 +15,36 @@ export default function SafelinkPage() {
   const [targetUrl, setTargetUrl] = useState('https://google.com');
 
   useEffect(() => {
-    // 1. Ambil data link dari localStorage berdasarkan slug
-    if (slug) {
-      const savedLinks = localStorage.getItem('linknova_links');
-      if (savedLinks) {
-        const linksMap = JSON.parse(savedLinks);
-        if (linksMap[slug]) {
-          setTargetUrl(linksMap[slug]);
+    async function fetchTargetUrl() {
+      if (!slug) return;
+      try {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/links?slug=eq.${slug}&select=target_url`, {
+          headers: {
+            'apikey': SUPABASE_ANON_KEY,
+            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+          }
+        });
+        const data = await res.json();
+        if (data && data.length > 0 && data[0].target_url) {
+          setTargetUrl(data[0].target_url);
         }
+      } catch (err) {
+        console.error('Gagal mengambil data:', err);
       }
     }
 
-    // 2. Suntikkan script Iklan Popunder Adsterra
+    fetchTargetUrl();
+
     const popunderScript = document.createElement('script');
     popunderScript.src = 'https://pl31879658.profitableratecpmnetwork.com/4f/bf/91/4fbf91988c1f25c795f3884bb487ee94.js';
     popunderScript.async = true;
     document.body.appendChild(popunderScript);
 
-    // 3. Suntikkan script Iklan Social Bar Adsterra
     const socialBarScript = document.createElement('script');
     socialBarScript.src = 'https://pl31879659.profitableratecpmnetwork.com/61/36/9f/61369f51f53aa1b77e21533250f4ac18.js';
     socialBarScript.async = true;
     document.body.appendChild(socialBarScript);
 
-    // 4. Timer mundur 10 detik
     if (countdown > 0) {
       const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
       return () => clearTimeout(timer);
