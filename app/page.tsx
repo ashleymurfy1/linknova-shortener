@@ -12,6 +12,7 @@ export default function Home() {
   const [linkType, setLinkType] = useState('terabox');
   const [shortUrl, setShortUrl] = useState('');
   const [loading, setLoading] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   const handleGenerate = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,6 +28,7 @@ export default function Home() {
     }
 
     setLoading(true);
+    setCopied(false);
 
     try {
       const response = await fetch(`${SUPABASE_URL}/rest/v1/links`, {
@@ -55,6 +57,12 @@ export default function Home() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(shortUrl);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   };
 
   return (
@@ -124,16 +132,24 @@ export default function Home() {
         </form>
 
         {shortUrl && (
-          <div className="mt-6 p-4 bg-gray-50 border border-gray-200 rounded-lg text-center">
-            <p className="text-sm text-gray-600 mb-2">Link Safelink Anda Berhasil Dibuat:</p>
-            <a
-              href={shortUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-600 font-bold underline break-all"
+          <div className="mt-6 p-4 bg-gray-50 border border-gray-200 rounded-lg text-center space-y-3">
+            <p className="text-sm text-gray-600">Link Safelink Anda Berhasil Dibuat:</p>
+            <div>
+              <a
+                href={shortUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 font-bold underline break-all"
+              >
+                {shortUrl}
+              </a>
+            </div>
+            <button
+              onClick={handleCopy}
+              className="w-full bg-gray-800 hover:bg-gray-900 text-white font-semibold py-2 px-4 rounded-lg transition duration-200 shadow-sm text-sm cursor-pointer"
             >
-              {shortUrl}
-            </a>
+              {copied ? '✓ Berhasil Disalin!' : 'Salin Link'}
+            </button>
           </div>
         )}
       </div>
