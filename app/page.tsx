@@ -4,23 +4,21 @@ import { useState } from 'react';
 
 export default function Home() {
     const [targetUrl, setTargetUrl] = useState('');
-    const [step, setStep] = useState(1); // Step 1: Input URL, Step 2: Tombol Human, Step 3: Timer
+    const [step, setStep] = useState(1);
     const [timeLeft, setTimeLeft] = useState(10);
     const [finalLink, setFinalLink] = useState('');
 
-    // Tahap 1: Saat user memasukkan link dan klik tombol buat
     const handleGenerate = (e: React.FormEvent) => {
         e.preventDefault();
         if (!targetUrl) {
             alert('Masukkan URL tujuan terlebih dahulu!');
             return;
         }
-        setStep(2); // Pindah ke tampilan tombol "I'M A HUMAN"
+        setStep(2);
     };
 
-    // Tahap 2: Saat tombol "I'M A HUMAN" diklik, mulai timer
     const handleHumanClick = () => {
-        setStep(3); // Pindah ke tampilan Timer
+        setStep(3);
         let timer = 10;
         setTimeLeft(timer);
 
@@ -29,7 +27,6 @@ export default function Home() {
             setTimeLeft(timer);
             if (timer <= 0) {
                 clearInterval(interval);
-                // Siapkan link tujuan akhir (bisa langsung ke target atau lewat safelink Blogger)
                 const bloggerSafelink = "https://secrtcollection.blogspot.com/p/safelink.html";
                 setFinalLink(`${bloggerSafelink}?to=${encodeURIComponent(targetUrl)}`);
             }
@@ -49,7 +46,7 @@ export default function Home() {
             <div style={{
                 background: '#ffffff',
                 width: '100%',
-                maxWidt: '520px',
+                maxWidth: '520px',
                 padding: '35px',
                 borderRadius: '12px',
                 boxShadow: '0 10px 25px rgba(0,0,0,0.3)',
@@ -57,7 +54,6 @@ export default function Home() {
             }}>
                 <h2 style={{ color: '#0f172a', marginBottom: '20px', fontSize: '22px' }}>LinkNova Shortener</h2>
 
-                {/* STEP 1: KOTAK INPUT URL */}
                 {step === 1 && (
                     <form onSubmit={handleGenerate}>
                         <p style={{ color: '#64748b', fontSize: '14px', marginBottom: '15px' }}>
@@ -80,14 +76,12 @@ export default function Home() {
                     </form>
                 )}
 
-                {/* STEP 2: TOMBOL I'M A HUMAN ALA OUO.IO */}
                 {step === 2 && (
                     <div>
                         <p style={{ color: '#333', fontSize: '15px', fontWeight: '600', marginBottom: '20px' }}>
                             Please click the button below to proceed to the destination page.
                         </p>
                         
-                        {/* Area Iklan Dummy / Adsterra */}
                         <div style={{ margin: '15px 0', padding: '20px', background: '#f8fafc', border: '1px dashed #cbd5e1', borderRadius: '8px', color: '#94a3b8', fontSize: '13px' }}>
                             [ Area Banner Iklan Adsterra ]
                         </div>
@@ -101,7 +95,6 @@ export default function Home() {
                     </div>
                 )}
 
-                {/* STEP 3: TIMER & TOMBOL MENUJU TUJUAN */}
                 {step === 3 && (
                     <div>
                         <p style={{ color: '#333', fontSize: '15px', fontWeight: '600', marginBottom: '15px' }}>
@@ -112,7 +105,6 @@ export default function Home() {
                             [ Area Iklan Adsterra ]
                         </div>
 
-                        {/* Lingkaran Timer */}
                         {timeLeft > 0 ? (
                             <div style={{ margin: '25px auto', width: '75px', height: '75px', border: '3px solid #cbd5e1', borderRadius: '50%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                                 <span style={{ fontSize: '22px', fontWeight: 'bold', color: '#1e293b' }}>{timeLeft}</span>
