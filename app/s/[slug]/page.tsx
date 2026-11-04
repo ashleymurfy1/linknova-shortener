@@ -86,7 +86,20 @@ export default function SafelinkPage() {
                         </p>
 
                         <div style={{ margin: '15px 0', padding: '15px', background: '#f8fafc', border: '1px dashed #cbd5e1', borderRadius: '8px', color: '#94a3b8', fontSize: '12px' }}>
-                            [ Area Banner Iklan Adsterra ]
+                           <div style={{ margin: '20px 0', minHeight: '90px', display: 'flex', justifyContent: 'center', overflow: 'hidden' }}>
+    <div style={{ textAlign: 'center' }}>
+        <script dangerouslySetInnerHTML={{ __html: `
+            atOptions = {
+                'key' : '3f47ef8ea331b451cd763b6d20ce265b',
+                'format' : 'iframe',
+                'height' : 90,
+                'width' : 728,
+                'params' : {}
+            };
+        ` }} />
+        <script type="text/javascript" src="https://brijmohan.org/22/3f47ef8ea331b451cd763b6d20ce265b" async />
+    </div>
+</div>
                         </div>
 
                         {timeLeft > 0 ? (
