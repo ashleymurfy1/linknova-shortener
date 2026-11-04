@@ -2,41 +2,30 @@
 
 import { useState } from 'react';
 
-const SUPABASE_URL = 'https://1myhqzouolhwqlpgqkic.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IjFteWhxem91bGh3cWxwZ3FraWMiLCJyb2xlIjoiYW5vbiIsImlhdCI6MTczMDUwMjgzMSwiZXhwIjoyMDQ2MDc4ODMxfQ.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IjFteWhxem91bGh3cWxwZ3FraWMiLCJyb2xlIjoiYW5vbiIsImlhdCI6MTczMDUwMjgzMSwiZXhwIjoyMDQ2MDc4ODMxfQ.fakekey'; // Gunakan kunci asli Anda yang ada di file sebelumnya
-
 export default function Home() {
-    const [teraboxUrl, setTeraboxUrl] = useState('');
-    const [customSlug, setCustomSlug] = useState('');
-    const [linkType, setLinkType] = useState('terabox');
-    const [loading, setLoading] = useState(false);
+    const [targetUrl, setTargetUrl] = useState('');
+    const [alias, setAlias] = useState('');
     const [shortUrl, setShortUrl] = useState('');
 
-    const handleGenerate = async (e: React.FormEvent) => {
+    const handleShorten = (e: React.FormEvent) => {
         e.preventDefault();
-        if (!customSlug) {
-            alert('Mohon isi kode unik pendek terlebih dahulu!');
-            return;
-        }
-        if (!teraboxUrl) {
-            alert('Mohon isi URL Terabox terlebih dahulu!');
+        if (!targetUrl) {
+            alert('Masukkan URL tujuan terlebih dahulu!');
             return;
         }
 
-        setLoading(true);
-
-        // Domain Blogger Safelink Anda
-        const domainBlogger = "https://secrtcollection.blogspot.com/p/safelink.html";
-        const finalSafelink = `${domainBlogger}?to=${encodeURIComponent(teraboxUrl)}`;
-
-        // Di sini Anda bisa menyematkan kembali logika penyimpanan ke Supabase jika diperlukan
-        setShortUrl(finalSafelink);
-        setLoading(false);
+        // Domain Safelink Blogger Anda
+        const bloggerSafelink = "https://secrtcollection.blogspot.com/p/safelink.html";
+        
+        // Membuat format link ala ouo.io yang dilempar ke Blogger
+        const finalLink = `${bloggerSafelink}?to=${encodeURIComponent(targetUrl)}`;
+        
+        setShortUrl(finalLink);
     };
 
     return (
         <div style={{
-            background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
+            background: 'linear-gradient(135deg, #0f172a 1e-3%, #1e293b 100%)',
             minHeight: '100vh',
             display: 'flex',
             justifyContent: 'center',
@@ -46,97 +35,71 @@ export default function Home() {
         }}>
             <div style={{
                 width: '100%',
-                maxWidth: '500px',
+                maxWidth: '480px',
                 background: '#ffffff',
-                padding: '30px',
+                padding: '35px',
                 borderRadius: '16px',
-                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.08)'
+                boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.3)'
             }}>
                 <div style={{ textAlign: 'center', marginBottom: '25px' }}>
-                    <h1 style={{ color: '#1a202c', fontSize: '24px', fontWeight: '700', marginBottom: '8px' }}>
+                    <h1 style={{ color: '#0f172a', fontSize: '26px', fontWeight: '800', marginBottom: '6px' }}>
                         LinkNova Shortener
                     </h1>
-                    <span style={{
-                        display: 'inline-block',
-                        background: '#e1effe',
-                        color: '#1e429f',
-                        fontSize: '12px',
-                        fontWeight: '600',
-                        padding: '4px 10px',
-                        borderRadius: '20px'
-                    }}>
-                        Database Online (Supabase Aktif)
-                    </span>
+                    <p style={{ color: '#64748b', fontSize: '13px' }}>Perpendek tautan & maksimalkan pendapatan iklan Anda</p>
                 </div>
 
-                <form onSubmit={handleGenerate}>
-                    <div style={{ marginBottom: '20px' }}>
-                        <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', color: '#4a5568', marginBottom: '6px', textTransform: 'uppercase' }}>
-                            Pilih Jenis Link
-                        </label>
-                        <select 
-                            value={linkType} 
-                            onChange={(e) => setLinkType(e.target.value)}
-                            style={{ width: '100%', padding: '12px 15px', border: '1px solid #cbd5e0', borderRadius: '8px', fontSize: '14px', background: '#fdfdfd' }}
-                        >
-                            <option value="terabox">Link Terabox</option>
-                        </select>
-                    </div>
-
-                    <div style={{ marginBottom: '20px' }}>
-                        <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', color: '#4a5568', marginBottom: '6px', textTransform: 'uppercase' }}>
-                            URL Terabox
+                <form onSubmit={handleShorten}>
+                    <div style={{ marginBottom: '18px' }}>
+                        <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#334155', marginBottom: '6px', textTransform: 'uppercase' }}>
+                            Masukkan URL Tujuan (Destinasi Link)
                         </label>
                         <input 
                             type="url" 
-                            value={teraboxUrl}
-                            onChange={(e) => setTeraboxUrl(e.target.value)}
-                            placeholder="https://1024terabox.com/s/..." 
+                            value={targetUrl}
+                            onChange={(e) => setTargetUrl(e.target.value)}
+                            placeholder="https://contoh.com/file-anda" 
                             required
-                            style={{ width: '100%', padding: '12px 15px', border: '1px solid #cbd5e0', borderRadius: '8px', fontSize: '14px', background: '#fdfdfd' }}
-                        />
-                    </div>
-
-                    <div style={{ marginBottom: '20px' }}>
-                        <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', color: '#4a5568', marginBottom: '6px', textTransform: 'uppercase' }}>
-                            Kode Unik Pendek (Slug)
-                        </label>
-                        <input 
-                            type="text" 
-                            value={customSlug}
-                            onChange={(e) => setCustomSlug(e.target.value)}
-                            placeholder="contoh: file1 atau botku" 
-                            required
-                            style={{ width: '100%', padding: '12px 15px', border: '1px solid #cbd5e0', borderRadius: '8px', fontSize: '14px', background: '#fdfdfd' }}
+                            style={{ width: '100%', padding: '12px 14px', border: '1px solid #cbd5e1', borderRadius: '8px', fontSize: '14px', outline: 'none' }}
                         />
                     </div>
 
                     <button 
                         type="submit" 
-                        disabled={loading}
                         style={{
                             width: '100%',
-                            background: '#3182ce',
+                            background: '#2563eb',
                             color: 'white',
                             border: 'none',
                             padding: '14px',
                             fontSize: '15px',
-                            fontWeight: '600',
+                            fontWeight: '700',
                             borderRadius: '8px',
                             cursor: 'pointer',
-                            boxShadow: '0 4px 12px rgba(49, 130, 206, 0.3)'
+                            boxShadow: '0 4px 14px rgba(37, 99, 235, 0.4)'
                         }}
                     >
-                        {loading ? 'Memproses...' : 'Buat Link Safelink'}
+                        Buat Tautan Pendek
                     </button>
                 </form>
 
                 {shortUrl && (
-                    <div style={{ marginTop: '20px', padding: '15px', background: '#edf2f7', borderRadius: '8px', wordBreak: 'break-all' }}>
-                        <p style={{ fontSize: '12px', fontWeight: '600', color: '#4a5568', marginBottom: '5px' }}>Hasil Safelink:</p>
-                        <a href={shortUrl} target="_blank" rel="noopener noreferrer" style={{ color: '#3182ce', fontSize: '14px', textDecoration: 'underline' }}>
-                            {shortUrl}
-                        </a>
+                    <div style={{ marginTop: '25px', padding: '15px', background: '#f8fafc', borderRadius: '8px', border: '1px dashed #cbd5e1' }}>
+                        <p style={{ fontSize: '11px', fontWeight: '700', color: '#64748b', marginBottom: '6px', textTransform: 'uppercase' }}>Tautan Berhasil Dibuat:</p>
+                        <input 
+                            type="text" 
+                            readOnly 
+                            value={shortUrl} 
+                            style={{ width: '100%', padding: '8px', fontSize: '12px', background: '#fff', border: '1px solid #e2e8f0', borderRadius: '4px', marginBottom: '10px' }}
+                        />
+                        <button 
+                            onClick={() => {
+                                navigator.clipboard.writeText(shortUrl);
+                                alert('Link berhasil disalin!');
+                            }}
+                            style={{ width: '100%', background: '#10b981', color: 'white', border: 'none', padding: '8px', fontSize: '13px', fontWeight: '600', borderRadius: '6px', cursor: 'pointer' }}
+                        >
+                            Salin Tautan
+                        </button>
                     </div>
                 )}
             </div>
