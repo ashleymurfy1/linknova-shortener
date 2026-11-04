@@ -4,127 +4,96 @@ import { useState } from 'react';
 
 export default function Home() {
     const [targetUrl, setTargetUrl] = useState('');
-    const [step, setStep] = useState(1);
-    const [timeLeft, setTimeLeft] = useState(10);
+    const [customSlug, setCustomSlug] = useState('');
+    const [shortUrl, setShortUrl] = useState('');
+    const [loading, setLoading] = useState(false);
 
-    const handleGenerate = (e: React.FormEvent) => {
+    const handleCreateShortLink = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!targetUrl) {
             alert('Masukkan URL tujuan terlebih dahulu!');
             return;
         }
-        setStep(2);
-    };
 
-    const handleHumanClick = () => {
-        setStep(3);
-        let timer = 10;
-        setTimeLeft(timer);
+        setLoading(true);
+        const slug = customSlug.trim() || Math.random().toString(36).substring(2, 8);
 
-        const interval = setInterval(() => {
-            timer -= 1;
-            setTimeLeft(timer);
-            if (timer <= 0) {
-                clearInterval(interval);
+        try {
+            const response = await fetch('/api/create-link', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ slug, targetUrl })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                const domain = window.location.origin;
+                setShortUrl(`${domain}/s/${slug}`);
+            } else {
+                alert(data.error || 'Gagal membuat tautan.');
             }
-        }, 1000);
+        } catch (err) {
+            console.error(err);
+            alert('Terjadi kesalahan koneksi.');
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
-        <div style={{
-            backgroundColor: '#1e293b',
-            minHeight: '100vh',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            fontFamily: "'Segoe UI', Arial, sans-serif",
-            padding: '20px'
-        }}>
-            <div style={{
-                background: '#ffffff',
-                width: '100%',
-                maxWidth: '520px',
-                padding: '35px',
-                borderRadius: '12px',
-                boxShadow: '0 10px 25px rgba(0,0,0,0.3)',
-                textAlign: 'center'
-            }}>
-                <h2 style={{ color: '#0f172a', marginBottom: '20px', fontSize: '22px' }}>LinkNova Shortener</h2>
+        <div style={{ backgroundColor: '#0f172a', minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center', fontFamily: "'Segoe UI', Arial, sans-serif", padding: '20px' }}>
+            <div style={{ background: '#ffffff', width: '100%', maxWidth: '480px', padding: '35px', borderRadius: '16px', boxShadow: '0 20px 25px rgba(0,0,0,0.3)' }}>
+                <div style={{ textAlign: 'center', marginBottom: '25px' }}>
+                    <h1 style={{ color: '#0f172a', fontSize: '24px', fontWeight: '800', marginBottom: '6px' }}>LinkNova Admin</h1>
+                    <p style={{ color: '#64748b', fontSize: '13px' }}>Buat tautan pendek publik ala Ouo.io</p>
+                </div>
 
-                {/* TAHAP 1: INPUT URL */}
-                {step === 1 && (
-                    <form onSubmit={handleGenerate}>
-                        <p style={{ color: '#64748b', fontSize: '14px', marginBottom: '15px' }}>
-                            Masukkan tautan tujuan Anda di bawah ini:
-                        </p>
+                <form onSubmit={handleCreateShortLink}>
+                    <div style={{ marginBottom: '15px' }}>
+                        <label style={{ display: 'block', fontSize: '12px', fontWeight: 'bold', color: '#334155', marginBottom: '5px', textTransform: 'uppercase' }}>URL Tujuan</label>
                         <input 
                             type="url" 
                             value={targetUrl}
                             onChange={(e) => setTargetUrl(e.target.value)}
                             placeholder="https://contoh.com/file-anda" 
                             required
-                            style={{ width: '100%', padding: '12px', border: '1px solid #cbd5e1', borderRadius: '8px', marginBottom: '15px', fontSize: '14px', outline: 'none' }}
+                            style={{ width: '100%', padding: '12px', border: '1px solid #cbd5e1', borderRadius: '8px', fontSize: '14px', outline: 'none' }}
                         />
-                        <button 
-                            type="submit" 
-                            style={{ width: '100%', background: '#2563eb', color: 'white', border: 'none', padding: '12px', fontSize: '15px', fontWeight: 'bold', borderRadius: '8px', cursor: 'pointer' }}
-                        >
-                            Buat Tautan Safelink
-                        </button>
-                    </form>
-                )}
+                    </div>
 
-                {/* TAHAP 2: TOMBOL I'M A HUMAN */}
-                {step === 2 && (
-                    <div>
-                        <p style={{ color: '#333', fontSize: '15px', fontWeight: '600', marginBottom: '20px' }}>
-                            Please click the button below to proceed to the destination page.
-                        </p>
-                        
-                        <div style={{ margin: '15px 0', padding: '20px', background: '#f8fafc', border: '1px dashed #cbd5e1', borderRadius: '8px', color: '#94a3b8', fontSize: '13px' }}>
-                            [ Area Banner Iklan Adsterra ]
-                        </div>
+                    <div style={{ marginBottom: '20px' }}>
+                        <label style={{ display: 'block', fontSize: '12px', fontWeight: 'bold', color: '#334155', marginBottom: '5px', textTransform: 'uppercase' }}>Kustom Slug (Opsional)</label>
+                        <input 
+                            type="text" 
+                            value={customSlug}
+                            onChange={(e) => setCustomSlug(e.target.value)}
+                            placeholder="biarkan kosong untuk acak" 
+                            style={{ width: '100%', padding: '12px', border: '1px solid #cbd5e1', borderRadius: '8px', fontSize: '14px', outline: 'none' }}
+                        />
+                    </div>
 
+                    <button 
+                        type="submit" 
+                        disabled={loading}
+                        style={{ width: '100%', background: '#2563eb', color: 'white', border: 'none', padding: '14px', fontSize: '15px', fontWeight: 'bold', borderRadius: '8px', cursor: 'pointer', boxShadow: '0 4px 14px rgba(37,99,235,0.4)' }}
+                    >
+                        {loading ? 'Memproses...' : 'Buat Tautan Pendek'}
+                    </button>
+                </form>
+
+                {shortUrl && (
+                    <div style={{ marginTop: '20px', padding: '15px', background: '#f8fafc', borderRadius: '8px', border: '1px dashed #cbd5e1' }}>
+                        <p style={{ fontSize: '11px', fontWeight: 'bold', color: '#64748b', marginBottom: '5px', textTransform: 'uppercase' }}>Hasil Tautan Publik:</p>
+                        <input type="text" readOnly value={shortUrl} style={{ width: '100%', padding: '8px', fontSize: '12px', background: '#fff', border: '1px solid #e2e8f0', borderRadius: '4px', marginBottom: '8px' }} />
                         <button 
-                            onClick={handleHumanClick}
-                            style={{ background: '#ef4444', color: 'white', border: 'none', padding: '12px 35px', fontSize: '15px', fontWeight: 'bold', borderRadius: '30px', cursor: 'pointer', boxShadow: '0 4px 12px rgba(239, 68, 68, 0.4)', textTransform: 'uppercase', margin: '15px 0' }}
+                            onClick={() => { navigator.clipboard.writeText(shortUrl); alert('Disalin!'); }}
+                            style={{ width: '100%', background: '#10b981', color: 'white', border: 'none', padding: '8px', fontSize: '13px', fontWeight: 'bold', borderRadius: '6px', cursor: 'pointer' }}
                         >
-                            I'M A HUMAN
+                            Salin Tautan
                         </button>
                     </div>
                 )}
-
-                {/* TAHAP 3: TIMER & LANGSUNG KE URL TUJUAN */}
-                {step === 3 && (
-                    <div>
-                        <p style={{ color: '#333', fontSize: '15px', fontWeight: '600', marginBottom: '15px' }}>
-                            Tautan Anda hampir siap.
-                        </p>
-
-                        <div style={{ margin: '15px 0', padding: '15px', background: '#f8fafc', border: '1px dashed #cbd5e1', borderRadius: '8px', color: '#94a3b8', fontSize: '12px' }}>
-                            [ Area Iklan Adsterra ]
-                        </div>
-
-                        {timeLeft > 0 ? (
-                            <div style={{ margin: '25px auto', width: '75px', height: '75px', border: '3px solid #cbd5e1', borderRadius: '50%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                                <span style={{ fontSize: '22px', fontWeight: 'bold', color: '#1e293b' }}>{timeLeft}</span>
-                                <span style={{ fontSize: '9px', color: '#64748b', textTransform: 'uppercase' }}>Detik</span>
-                            </div>
-                        ) : (
-                            <div style={{ marginTop: '20px' }}>
-                                <a 
-                                    href={targetUrl} 
-                                    target="_blank" 
-                                    rel="noopener noreferrer"
-                                    style={{ display: 'block', background: '#10b981', color: 'white', padding: '14px', fontSize: '15px', fontWeight: 'bold', textDecoration: 'none', borderRadius: '8px', textTransform: 'uppercase', boxShadow: '0 4px 12px rgba(16, 185, 129, 0.4)' }}
-                                >
-                                    Dapatkan Tautan (Get Link)
-                                </a>
-                            </div>
-                        )}
-                    </div>
-                )}
-
             </div>
         </div>
     );
