@@ -6,7 +6,6 @@ export default function Home() {
     const [targetUrl, setTargetUrl] = useState('');
     const [step, setStep] = useState(1);
     const [timeLeft, setTimeLeft] = useState(10);
-    const [finalLink, setFinalLink] = useState('');
 
     const handleGenerate = (e: React.FormEvent) => {
         e.preventDefault();
@@ -27,8 +26,6 @@ export default function Home() {
             setTimeLeft(timer);
             if (timer <= 0) {
                 clearInterval(interval);
-                const bloggerSafelink = "https://secrtcollection.blogspot.com/p/safelink.html";
-                setFinalLink(`${bloggerSafelink}?to=${encodeURIComponent(targetUrl)}`);
             }
         }, 1000);
     };
@@ -54,6 +51,7 @@ export default function Home() {
             }}>
                 <h2 style={{ color: '#0f172a', marginBottom: '20px', fontSize: '22px' }}>LinkNova Shortener</h2>
 
+                {/* TAHAP 1: INPUT URL */}
                 {step === 1 && (
                     <form onSubmit={handleGenerate}>
                         <p style={{ color: '#64748b', fontSize: '14px', marginBottom: '15px' }}>
@@ -76,6 +74,7 @@ export default function Home() {
                     </form>
                 )}
 
+                {/* TAHAP 2: TOMBOL I'M A HUMAN */}
                 {step === 2 && (
                     <div>
                         <p style={{ color: '#333', fontSize: '15px', fontWeight: '600', marginBottom: '20px' }}>
@@ -95,6 +94,7 @@ export default function Home() {
                     </div>
                 )}
 
+                {/* TAHAP 3: TIMER & LANGSUNG KE URL TUJUAN */}
                 {step === 3 && (
                     <div>
                         <p style={{ color: '#333', fontSize: '15px', fontWeight: '600', marginBottom: '15px' }}>
@@ -113,7 +113,9 @@ export default function Home() {
                         ) : (
                             <div style={{ marginTop: '20px' }}>
                                 <a 
-                                    href={finalLink} 
+                                    href={targetUrl} 
+                                    target="_blank" 
+                                    rel="noopener noreferrer"
                                     style={{ display: 'block', background: '#10b981', color: 'white', padding: '14px', fontSize: '15px', fontWeight: 'bold', textDecoration: 'none', borderRadius: '8px', textTransform: 'uppercase', boxShadow: '0 4px 12px rgba(16, 185, 129, 0.4)' }}
                                 >
                                     Dapatkan Tautan (Get Link)
