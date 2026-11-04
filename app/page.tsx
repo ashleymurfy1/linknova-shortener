@@ -4,10 +4,8 @@ import { useState } from 'react';
 
 export default function Home() {
     const [targetUrl, setTargetUrl] = useState('');
-    const [alias, setAlias] = useState('');
-    const [shortUrl, setShortUrl] = useState('');
 
-    const handleShorten = (e: React.FormEvent) => {
+    const handleGetLink = (e: React.FormEvent) => {
         e.preventDefault();
         if (!targetUrl) {
             alert('Masukkan URL tujuan terlebih dahulu!');
@@ -17,15 +15,16 @@ export default function Home() {
         // Domain Safelink Blogger Anda
         const bloggerSafelink = "https://secrtcollection.blogspot.com/p/safelink.html";
         
-        // Membuat format link ala ouo.io yang dilempar ke Blogger
-        const finalLink = `${bloggerSafelink}?to=${encodeURIComponent(targetUrl)}`;
+        // Alur: Lempar langsung (redirect) ke Blogger dengan membawa parameter link asli
+        const finalRedirectUrl = `${bloggerSafelink}?to=${encodeURIComponent(targetUrl)}`;
         
-        setShortUrl(finalLink);
+        // Membuka halaman safelink Blogger secara otomatis
+        window.location.href = finalRedirectUrl;
     };
 
     return (
         <div style={{
-            background: 'linear-gradient(135deg, #0f172a 1e-3%, #1e293b 100%)',
+            background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
             minHeight: '100vh',
             display: 'flex',
             justifyContent: 'center',
@@ -45,13 +44,13 @@ export default function Home() {
                     <h1 style={{ color: '#0f172a', fontSize: '26px', fontWeight: '800', marginBottom: '6px' }}>
                         LinkNova Shortener
                     </h1>
-                    <p style={{ color: '#64748b', fontSize: '13px' }}>Perpendek tautan & maksimalkan pendapatan iklan Anda</p>
+                    <p style={{ color: '#64748b', fontSize: '13px' }}>Sistem Safelink Otomatis & Cepat</p>
                 </div>
 
-                <form onSubmit={handleShorten}>
+                <form onSubmit={handleGetLink}>
                     <div style={{ marginBottom: '18px' }}>
                         <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#334155', marginBottom: '6px', textTransform: 'uppercase' }}>
-                            Masukkan URL Tujuan (Destinasi Link)
+                            Masukkan URL Tujuan
                         </label>
                         <input 
                             type="url" 
@@ -75,33 +74,13 @@ export default function Home() {
                             fontWeight: '700',
                             borderRadius: '8px',
                             cursor: 'pointer',
-                            boxShadow: '0 4px 14px rgba(37, 99, 235, 0.4)'
+                            boxShadow: '0 4px 14px rgba(37, 99, 235, 0.4)',
+                            transition: 'background 0.2s'
                         }}
                     >
-                        Buat Tautan Pendek
+                        Get Link (Menuju Safelink)
                     </button>
                 </form>
-
-                {shortUrl && (
-                    <div style={{ marginTop: '25px', padding: '15px', background: '#f8fafc', borderRadius: '8px', border: '1px dashed #cbd5e1' }}>
-                        <p style={{ fontSize: '11px', fontWeight: '700', color: '#64748b', marginBottom: '6px', textTransform: 'uppercase' }}>Tautan Berhasil Dibuat:</p>
-                        <input 
-                            type="text" 
-                            readOnly 
-                            value={shortUrl} 
-                            style={{ width: '100%', padding: '8px', fontSize: '12px', background: '#fff', border: '1px solid #e2e8f0', borderRadius: '4px', marginBottom: '10px' }}
-                        />
-                        <button 
-                            onClick={() => {
-                                navigator.clipboard.writeText(shortUrl);
-                                alert('Link berhasil disalin!');
-                            }}
-                            style={{ width: '100%', background: '#10b981', color: 'white', border: 'none', padding: '8px', fontSize: '13px', fontWeight: '600', borderRadius: '6px', cursor: 'pointer' }}
-                        >
-                            Salin Tautan
-                        </button>
-                    </div>
-                )}
             </div>
         </div>
     );
