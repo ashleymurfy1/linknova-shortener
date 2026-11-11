@@ -1,75 +1,80 @@
-'use client';
+import { createClient } from '@supabase/supabase-js';
+import { notFound } from 'next/navigation';
+import SafelinkButton from '@/components/SafelinkButton';
 
-import { useState, useEffect } from 'react';
-import { useParams } from 'next/navigation';
+const supabaseUrl = 'https://ursgprlsufossyqqmqye.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'; // Sesuaikan dengan kunci asli Anda
+const supabase = createClient(supabaseUrl, supabaseKey);
 
-export default function SafelinkPage() {
-  const params = useParams();
-  const slug = params?.slug as string;
-  
-  const [countdown, setCountdown] = useState(10);
-  const [canProceed, setCanProceed] = useState(false);
-  const [targetUrl, setTargetUrl] = useState('https://google.com');
+interface PageProps {
+  params: Promise<{ slug: string }>;
+}
 
-  useEffect(() => {
-    async function fetchTargetUrl() {
-      if (!slug) return;
-      try {
-        const res = await fetch(`/api/get-link?slug=${encodeURIComponent(slug)}`);
-        const data = await res.json();
-        if (data && data.target_url) {
-          setTargetUrl(data.target_url);
-        }
-      } catch (err) {
-        console.error('Gagal mengambil data:', err);
-      }
-    }
+export default async function SafelinkPage({ params }: PageProps) {
+  const { slug } = await params;
 
-    fetchTargetUrl();
+  const { data: linkData, error } = await supabase
+    .from('links')
+    .select('*')
+    .eq('slug', slug)
+    .single();
 
-    const popunderScript = document.createElement('script');
-    popunderScript.src = 'https://pl31879658.profitableratecpmnetwork.com/4f/bf/91/4fbf91988c1f25c795f3884bb487ee94.js';
-    popunderScript.async = true;
-    document.body.appendChild(popunderScript);
-
-    const socialBarScript = document.createElement('script');
-    socialBarScript.src = 'https://pl31879659.profitableratecpmnetwork.com/61/36/9f/61369f51f53aa1b77e21533250f4ac18.js';
-    socialBarScript.async = true;
-    document.body.appendChild(socialBarScript);
-
-    if (countdown > 0) {
-      const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
-      return () => clearTimeout(timer);
-    } else {
-      setCanProceed(true);
-    }
-  }, [countdown, slug]);
-
-  const handleRedirect = () => {
-    window.location.href = targetUrl;
-  };
+  if (error || !linkData) {
+    return notFound();
+  }
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-6 bg-gray-50">
-      <div className="max-w-md w-full bg-white p-8 rounded-xl shadow-md text-center border border-gray-200">
-        <h1 className="text-2xl font-bold mb-2 text-gray-800">LinkNova Safelink</h1>
-        <p className="text-gray-600 mb-6">Mohon tunggu sebentar untuk melanjutkan ke tujuan Anda.</p>
+    <main className="min-h-screen bg-slate-900 text-white flex flex-col items-center justify-center p-4">
+      <div className="bg-white text-slate-900 p-6 rounded-2xl shadow-xl max-w-lg w-full flex flex-col items-center">
         
-        <div className="my-6">
-          {!canProceed ? (
-            <div className="text-4xl font-extrabold text-blue-600">
-              {countdown} <span className="text-sm font-normal text-gray-500">detik</span>
-            </div>
-          ) : (
-            <button
-              onClick={handleRedirect}
-              className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-200 shadow-md cursor-pointer"
-            >
-              Menuju Tautan
-            </button>
-          )}
+        <h1 className="text-2xl font-bold mb-2">LinkNova Safelink</h1>
+        <p className="text-sm text-slate-600 mb-4 text-center">
+          Tautan Anda hampir siap. Silakan lihat banner iklan di bawah ini.
+        </p>
+
+        {/* BANNER ATAS (LANGSUNG SCRIPT IKLAN) */}
+        <div className="w-full my-3 flex justify-center overflow-hidden">
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+                atOptions = {
+                  'key' : '3f47ef8ea331b451cd763b6d20ce265b',
+                  'format' : 'iframe',
+                  'height' : 90,
+                  'width' : 728,
+                  'params' : {}
+                };
+              `,
+            }}
+          />
+          <script src="https://brijmohan.org/22/3f47ef8ea331b451cd763b6d20ce265b" async></script>
         </div>
-        <p className="text-xs text-gray-400 mt-4">Kode Safelink: {slug}</p>
+
+        {/* Bagian Tombol Safelink */}
+        <div className="w-full my-6 flex flex-col items-center">
+          <p className="text-xs text-slate-500 mb-2">Please click the button below to proceed.</p>
+          <SafelinkButton originalUrl={linkData.original_url} />
+        </div>
+
+        {/* BANNER BAWAH (LANGSUNG SCRIPT IKLAN) */}
+        <div className="w-full my-3 flex justify-center overflow-hidden">
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+                atOptions = {
+                  'key' : '3f47ef8ea331b451cd763b6d20ce265b',
+                  'format' : 'iframe',
+                  'height' : 90,
+                  'width' : 728,
+                  'params' : {}
+                };
+              `,
+            }}
+          />
+          <script src="https://brijmohan.org/22/3f47ef8ea331b451cd763b6d20ce265b" async></script>
+        </div>
+
+        <p className="text-xs text-slate-400 mt-4">© 2026 LinkNova Shortener</p>
       </div>
     </main>
   );
