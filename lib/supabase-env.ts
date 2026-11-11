@@ -15,7 +15,7 @@ function readEnv(...names: string[]): string | undefined {
 export function getSupabaseConfig() {
     const prefix = 'NEXT_PUBLIC_';
     return {
-        url: readEnv('SUPABASE_URL', `${prefix}SUPABASE_URL`),
-        key: readEnv('SUPABASE_ANON_KEY', `${prefix}SUPABASE_ANON_KEY`),
+        url: process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL,
+key: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY,
     };
 }
