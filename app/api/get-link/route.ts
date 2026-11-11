@@ -16,7 +16,6 @@ export async function GET(request: Request) {
     }
 
     try {
-        // Menggunakan REST API langsung ke Supabase tanpa library tambahan
         const res = await fetch(`${supabaseUrl}/rest/v1/links?slug=eq.${slug}&select=target_url`, {
             headers: {
                 'apikey': supabaseKey,
