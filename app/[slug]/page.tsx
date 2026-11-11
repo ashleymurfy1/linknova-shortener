@@ -3,9 +3,6 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
 export default function SafelinkPage() {
   const params = useParams();
   const slug = params?.slug as string;
@@ -18,15 +15,10 @@ export default function SafelinkPage() {
     async function fetchTargetUrl() {
       if (!slug) return;
       try {
-        const res = await fetch(`${SUPABASE_URL}/rest/v1/links?slug=eq.${slug}&select=target_url`, {
-          headers: {
-            'apikey': SUPABASE_ANON_KEY,
-            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
-          }
-        });
+        const res = await fetch(`/api/get-link?slug=${encodeURIComponent(slug)}`);
         const data = await res.json();
-        if (data && data.length > 0 && data[0].target_url) {
-          setTargetUrl(data[0].target_url);
+        if (data && data.target_url) {
+          setTargetUrl(data.target_url);
         }
       } catch (err) {
         console.error('Gagal mengambil data:', err);

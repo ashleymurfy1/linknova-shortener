@@ -1,4 +1,7 @@
 import { NextResponse } from 'next/server';
+import { getSupabaseConfig } from '../../../lib/supabase-env';
+
+export const dynamic = 'force-dynamic';
 
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
@@ -8,15 +11,14 @@ export async function GET(request: Request) {
         return NextResponse.json({ error: 'Slug tidak ditemukan' }, { status: 400 });
     }
 
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    const { url: supabaseUrl, key: supabaseKey } = getSupabaseConfig();
 
     if (!supabaseUrl || !supabaseKey) {
         return NextResponse.json({ error: 'Konfigurasi server belum lengkap' }, { status: 500 });
     }
 
     try {
-        const res = await fetch(`${supabaseUrl}/rest/v1/links?slug=eq.${slug}&select=target_url`, {
+        const res = await fetch(`${supabaseUrl}/rest/v1/links?slug=eq.${encodeURIComponent(slug)}&select=target_url`, {
             headers: {
                 'apikey': supabaseKey,
                 'Authorization': `Bearer ${supabaseKey}`
