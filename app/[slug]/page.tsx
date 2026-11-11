@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import { notFound } from 'next/navigation';
+import AdBanner from '@/components/AdBanner';
 
 const supabaseUrl = 'https://ursgprlsufossyqqmqye.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'; // Gunakan kunci supabase asli Anda
@@ -32,21 +33,8 @@ export default async function SafelinkPage({ params }: PageProps) {
         </p>
 
         {/* BANNER ATAS */}
-        <div className="w-full my-3 flex justify-center overflow-hidden">
-          <script
-            dangerouslySetInnerHTML={{
-              __html: `
-                atOptions = {
-                  'key' : '3f47ef8ea331b451cd763b6d20ce265b',
-                  'format' : 'iframe',
-                  'height' : 90,
-                  'width' : 728,
-                  'params' : {}
-                };
-              `,
-            }}
-          />
-          <script src="https://brijmohan.org/22/3f47ef8ea331b451cd763b6d20ce265b" async></script>
+        <div className="w-full my-3 flex justify-center">
+          <AdBanner />
         </div>
 
         {/* Tombol Menuju Tautan Asli */}
@@ -63,21 +51,8 @@ export default async function SafelinkPage({ params }: PageProps) {
         </div>
 
         {/* BANNER BAWAH */}
-        <div className="w-full my-3 flex justify-center overflow-hidden">
-          <script
-            dangerouslySetInnerHTML={{
-              __html: `
-                atOptions = {
-                  'key' : '3f47ef8ea331b451cd763b6d20ce265b',
-                  'format' : 'iframe',
-                  'height' : 90,
-                  'width' : 728,
-                  'params' : {}
-                };
-              `,
-            }}
-          />
-          <script src="https://brijmohan.org/22/3f47ef8ea331b451cd763b6d20ce265b" async></script>
+        <div className="w-full my-3 flex justify-center">
+          <AdBanner />
         </div>
 
         <p className="text-xs text-slate-400 mt-4">© 2026 LinkNova Shortener</p>
