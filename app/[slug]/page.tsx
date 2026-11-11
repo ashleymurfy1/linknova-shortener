@@ -3,8 +3,8 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 
-const SUPABASE_URL = 'https://lmyhqzouolhwqlpgqkic.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxteWhxem91b2xod3FscGdxa2ljIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI2NjkzMTEsImV4cCI6MjEwODI0NTMxMX0.4Xe-NTtPQ8FC-fw2bkLwrc0SEvYImJNUTAuMEoH9DxY';
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 export default function SafelinkPage() {
   const params = useParams();
