@@ -1,4 +1,7 @@
 import { NextResponse } from 'next/server';
+import { getSupabaseConfig } from '../../../lib/supabase-env';
+
+export const dynamic = 'force-dynamic';
 
 export async function POST(request: Request) {
     try {
@@ -8,8 +11,7 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: 'Slug dan URL tujuan harus diisi' }, { status: 400 });
         }
 
-        const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-        const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+        const { url: supabaseUrl, key: supabaseKey } = getSupabaseConfig();
 
         if (!supabaseUrl || !supabaseKey) {
             return NextResponse.json({ error: 'Konfigurasi server belum lengkap' }, { status: 500 });
