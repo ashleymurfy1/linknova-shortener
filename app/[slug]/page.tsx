@@ -1,9 +1,8 @@
 import { createClient } from '@supabase/supabase-js';
 import { notFound } from 'next/navigation';
-import SafelinkButton from '@/components/SafelinkButton';
 
 const supabaseUrl = 'https://ursgprlsufossyqqmqye.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'; // Sesuaikan dengan kunci asli Anda
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'; // Gunakan kunci supabase asli Anda
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 interface PageProps {
@@ -32,7 +31,7 @@ export default async function SafelinkPage({ params }: PageProps) {
           Tautan Anda hampir siap. Silakan lihat banner iklan di bawah ini.
         </p>
 
-        {/* BANNER ATAS (LANGSUNG SCRIPT IKLAN) */}
+        {/* BANNER ATAS */}
         <div className="w-full my-3 flex justify-center overflow-hidden">
           <script
             dangerouslySetInnerHTML={{
@@ -50,13 +49,20 @@ export default async function SafelinkPage({ params }: PageProps) {
           <script src="https://brijmohan.org/22/3f47ef8ea331b451cd763b6d20ce265b" async></script>
         </div>
 
-        {/* Bagian Tombol Safelink */}
+        {/* Tombol Menuju Tautan Asli */}
         <div className="w-full my-6 flex flex-col items-center">
           <p className="text-xs text-slate-500 mb-2">Please click the button below to proceed.</p>
-          <SafelinkButton originalUrl={linkData.original_url} />
+          <a
+            href={linkData.original_url}
+            className="w-full py-3 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-xl text-center shadow-lg transition-all"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            DAPATKAN TAUTAN (GET LINK)
+          </a>
         </div>
 
-        {/* BANNER BAWAH (LANGSUNG SCRIPT IKLAN) */}
+        {/* BANNER BAWAH */}
         <div className="w-full my-3 flex justify-center overflow-hidden">
           <script
             dangerouslySetInnerHTML={{
