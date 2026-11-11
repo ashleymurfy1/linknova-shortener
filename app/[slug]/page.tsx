@@ -1,6 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
 import { notFound } from 'next/navigation';
-import AdBanner from '@/components/AdBanner';
 
 const supabaseUrl = 'https://ursgprlsufossyqqmqye.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'; // Gunakan kunci supabase asli Anda
@@ -29,12 +28,35 @@ export default async function SafelinkPage({ params }: PageProps) {
         
         <h1 className="text-2xl font-bold mb-2">LinkNova Safelink</h1>
         <p className="text-sm text-slate-600 mb-4 text-center">
-          Tautan Anda hampir siap. Silakan lihat banner iklan di bawah ini.
+          Tautan Anda hampir siap. Silakan klik tombol di bawah untuk melanjutkan.
         </p>
 
-        {/* BANNER ATAS */}
-        <div className="w-full my-3 flex justify-center">
-          <AdBanner />
+        {/* ================= BANNER ATAS ================= */}
+        <div className="w-full my-3 flex justify-center border border-dashed border-slate-300 rounded-lg p-2 bg-slate-50 min-h-[90px]">
+          <iframe
+            srcDoc={`
+              <!DOCTYPE html>
+              <html>
+              <head><style>body { margin: 0; display: flex; justify-content: center; background: transparent; }</style></head>
+              <body>
+                <script type="text/javascript">
+                  atOptions = {
+                    'key' : '3f47ef8ea331b451cd763b6d20ce265b',
+                    'format' : 'iframe',
+                    'height' : 90,
+                    'width' : 728,
+                    'params' : {}
+                  };
+                </script>
+                <script type="text/javascript" src="https://brijmohan.org/22/3f47ef8ea331b451cd763b6d20ce265b"></script>
+              </body>
+              </html>
+            `}
+            width="100%"
+            height="90"
+            style={{ border: 'none', overflow: 'hidden' }}
+            scrolling="no"
+          />
         </div>
 
         {/* Tombol Menuju Tautan Asli */}
@@ -50,9 +72,32 @@ export default async function SafelinkPage({ params }: PageProps) {
           </a>
         </div>
 
-        {/* BANNER BAWAH */}
-        <div className="w-full my-3 flex justify-center">
-          <AdBanner />
+        {/* ================= BANNER BAWAH ================= */}
+        <div className="w-full my-3 flex justify-center border border-dashed border-slate-300 rounded-lg p-2 bg-slate-50 min-h-[90px]">
+          <iframe
+            srcDoc={`
+              <!DOCTYPE html>
+              <html>
+              <head><style>body { margin: 0; display: flex; justify-content: center; background: transparent; }</style></head>
+              <body>
+                <script type="text/javascript">
+                  atOptions = {
+                    'key' : '3f47ef8ea331b451cd763b6d20ce265b',
+                    'format' : 'iframe',
+                    'height' : 90,
+                    'width' : 728,
+                    'params' : {}
+                  };
+                </script>
+                <script type="text/javascript" src="https://brijmohan.org/22/3f47ef8ea331b451cd763b6d20ce265b"></script>
+              </body>
+              </html>
+            `}
+            width="100%"
+            height="90"
+            style={{ border: 'none', overflow: 'hidden' }}
+            scrolling="no"
+          />
         </div>
 
         <p className="text-xs text-slate-400 mt-4">© 2026 LinkNova Shortener</p>
